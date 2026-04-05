@@ -3,252 +3,1273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Mini-Apps Suite</title>
+    <title>Cloud Mini-Apps Suite ✨</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         :root {
-            --bg-dark: #0f172a;
-            --bg-panel: #1e293b;
-            --primary: #3b82f6;
-            --accent: #8b5cf6;
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
             --success: #10b981;
+            --warning: #f59e0b;
             --danger: #ef4444;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --glass: rgba(30, 41, 59, 0.7);
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            height: 100vh;
-            overflow: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
-                              radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            min-height: 100vh;
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .app-container { display: flex; height: 100vh; }
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+        }
+
+        .bg-animation li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; background: rgba(99, 102, 241, 0.3); }
+        .bg-animation li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; background: rgba(236, 72, 153, 0.3); }
+        .bg-animation li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(6, 182, 212, 0.3); }
+        .bg-animation li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; background: rgba(16, 185, 129, 0.3); }
+        .bg-animation li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; background: rgba(245, 158, 11, 0.3); }
+        .bg-animation li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; background: rgba(99, 102, 241, 0.3); }
+        .bg-animation li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; background: rgba(236, 72, 153, 0.3); }
+        .bg-animation li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; background: rgba(6, 182, 212, 0.3); }
+        .bg-animation li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; background: rgba(16, 185, 129, 0.3); }
+        .bg-animation li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; background: rgba(245, 158, 11, 0.3); }
+
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 50%; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            backdrop-filter: blur(10px);
+        }
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
-            background: var(--bg-panel);
-            border-right: 1px solid var(--border);
+            width: 280px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             z-index: 100;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
         }
 
-        .logo { padding: 2rem; text-align: center; border-bottom: 1px solid var(--border); }
-        .logo h2 { background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .logo {
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+        }
 
-        .nav-links { flex: 1; overflow-y: auto; padding: 1rem 0; }
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.8)); }
+        }
+
+        .nav-links {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .nav-links::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
         .nav-btn {
             width: 100%;
             padding: 1rem 1.5rem;
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: var(--gray);
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.95rem;
+            font-weight: 500;
             border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
-        .nav-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
-        .nav-btn.active { background: rgba(59, 130, 246, 0.1); color: var(--primary); border-left-color: var(--primary); }
 
-        .sidebar-footer { padding: 1rem; text-align: center; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border); }
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            padding-left: 2rem;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), transparent);
+            color: var(--primary-light);
+            border-left-color: var(--primary);
+            box-shadow: inset 5px 0 10px rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-btn span {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+        }
 
         /* Main Content */
-        .main-content { flex: 1; padding: 2rem; overflow-y: auto; position: relative; }
-        .app-section { display: none; animation: fadeIn 0.4s ease; max-width: 1200px; margin: 0 auto; }
-        .app-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
 
-        h1 { margin-bottom: 1.5rem; font-size: 2rem; background: linear-gradient(to right, var(--text-main), var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .app-section {
+            display: none;
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .app-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
 
         /* Glass Panel */
         .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .glass-panel > * {
+            position: relative;
+            z-index: 1;
         }
 
         /* Buttons */
         .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 0.8rem 1.8rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            transition: transform 0.1s, opacity 0.2s;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn:active { transform: scale(0.96); }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-secondary { background: var(--accent); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
-        .full-width { width: 100%; margin-top: 1rem; }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #f472b6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #34d399);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #f87171);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary-light);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
 
         /* Inputs */
-        input, select {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 0.8rem;
-            border-radius: 8px;
+        input, select, textarea {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
             width: 100%;
-            margin-bottom: 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
-        input:focus, select:focus { outline: 2px solid var(--primary); border-color: transparent; }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        input::placeholder {
+            color: var(--gray);
+        }
 
         /* Stopwatch */
-        .time-display { font-size: 4rem; font-weight: 700; text-align: center; margin: 2rem 0; font-variant-numeric: tabular-nums; }
-        .controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .lap-list { list-style: none; margin-top: 2rem; max-height: 200px; overflow-y: auto; }
-        .lap-item { display: flex; justify-content: space-between; padding: 0.8rem; border-bottom: 1px solid var(--border); }
+        .time-display {
+            font-size: 5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 2rem 0;
+            font-variant-numeric: tabular-nums;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .lap-list {
+            list-style: none;
+            margin-top: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .lap-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease;
+        }
+
+        .lap-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .lap-number {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        .lap-time {
+            color: var(--light);
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
 
         /* Weather */
-        .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-        .weather-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            padding: 1.5rem;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
         }
-        .weather-temp { font-size: 2.5rem; font-weight: bold; margin: 0.5rem 0; }
-        .weather-city { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .weather-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            padding: 2rem;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .weather-card:hover::before {
+            opacity: 1;
+        }
+
+        .weather-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .weather-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .weather-temp {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--light), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .weather-city {
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-desc {
+            color: var(--light);
+            font-size: 1.1rem;
+            text-transform: capitalize;
+        }
+
+        .weather-details {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .weather-detail {
+            text-align: center;
+        }
+
+        .weather-detail-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-light);
+        }
+
+        .weather-detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
 
         /* Tic Tac Toe */
-        .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 400px; margin: 2rem auto; }
+        .game-status {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            min-height: 2.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .game-status.winner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid var(--success);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .ttt-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 450px;
+            margin: 2rem auto;
+        }
+
         .ttt-cell {
             aspect-ratio: 1;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            font-weight: bold;
+            font-size: 3.5rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            backdrop-filter: blur(5px);
         }
-        .ttt-cell:hover { background: rgba(255,255,255,0.1); }
-        .ttt-cell.x { color: var(--primary); }
-        .ttt-cell.o { color: var(--danger); }
-        .game-status { text-align: center; font-size: 1.2rem; margin-bottom: 1rem; min-height: 1.5em; }
+
+        .ttt-cell:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .ttt-cell.x {
+            color: var(--primary-light);
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+        }
+
+        .ttt-cell.o {
+            color: var(--secondary);
+            text-shadow: 0 0 20px rgba(236, 72, 153, 0.8);
+        }
+
+        .ttt-cell.winning {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(6, 182, 212, 0.3));
+            animation: winPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes winPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.8); }
+        }
 
         /* Converter */
-        .converter-panel { max-width: 500px; margin: 0 auto; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); }
+        .converter-panel {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .converter-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .swap-btn {
+            background: var(--primary);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+
+        .swap-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: var(--primary-light);
+        }
 
         /* Todo */
-        .input-group { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .input-group input { margin-bottom: 0; flex: 1; }
-        .todo-list, .expense-list { list-style: none; }
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .todo-list, .expense-list {
+            list-style: none;
+        }
+
         .todo-item, .expense-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
-            background: rgba(255,255,255,0.03);
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 0.8rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
-        .todo-item.completed span { text-decoration: line-through; opacity: 0.5; }
-        .delete-btn { background: transparent; border: none; color: var(--danger); cursor: pointer; font-size: 1.2rem; }
+
+        .todo-item:hover, .expense-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+        }
+
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: var(--gray);
+        }
+
+        .todo-actions, .expense-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .complete-btn:hover {
+            color: var(--success);
+        }
+
+        .delete-btn:hover {
+            color: var(--danger);
+        }
 
         /* Calculator */
-        .calc-wrapper { max-width: 400px; margin: 0 auto; }
-        #calc-display { width: 100%; padding: 1.5rem; font-size: 2rem; text-align: right; margin-bottom: 1rem; background: rgba(0,0,0,0.5); }
-        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
-        .calc-key {
-            padding: 1.5rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.05);
-            color: var(--text-main);
-            transition: background 0.2s;
+        .calc-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
         }
-        .calc-key:hover { background: rgba(255,255,255,0.1); }
-        .calc-key.op { background: var(--primary); color: white; }
-        .calc-key.eq { background: var(--success); color: white; grid-column: span 2; }
-        .calc-key.clear { background: var(--danger); color: white; }
 
-        /* Password */
-        .pass-result { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .pass-result input { margin-bottom: 0; flex: 1; font-family: monospace; font-size: 1.2rem; }
-        .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .controls-grid label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        #calc-display {
+            width: 100%;
+            padding: 2rem;
+            font-size: 2.5rem;
+            text-align: right;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid var(--glass-border);
+        }
 
-        /* Drawing */
-        .draw-controls { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
-        #draw-canvas { background: white; border-radius: 12px; cursor: crosshair; touch-action: none; width: 100%; height: 500px; }
+        .calc-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
 
-        /* Memory */
-        .memory-stats { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 600px; margin: 0 auto; }
+        .calc-key {
+            padding: 1.8rem;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+            font-weight: 600;
+        }
+
+        .calc-key:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-key:active {
+            transform: translateY(0);
+        }
+
+        .calc-key.op {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .calc-key.op:hover {
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .calc-key.eq {
+            background: linear-gradient(135deg, var(--success), #34d399);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-key.eq:hover {
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .calc-key.clear {
+            background: linear-gradient(135deg, var(--danger), #f87171);
+            color: white;
+        }
+
+        .calc-key.clear:hover {
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Password Generator */
+        .pass-result {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .pass-result input {
+            flex: 1;
+            margin-bottom: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toggle-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .strength-meter {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            width: 0%;
+        }
+
+        .strength-weak { background: var(--danger); width: 25%; }
+        .strength-medium { background: var(--warning); width: 50%; }
+        .strength-strong { background: var(--success); width: 100%; }
+
+        /* Drawing Board */
+        .draw-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+
+        .color-picker {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            overflow: hidden;
+            padding: 0;
+            background: none;
+        }
+
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker::-webkit-color-swatch {
+            border: 3px solid var(--light);
+            border-radius: 50%;
+        }
+
+        .brush-size {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .brush-size input[type="range"] {
+            width: 150px;
+            margin: 0;
+        }
+
+        #draw-canvas {
+            background: white;
+            border-radius: 20px;
+            cursor: crosshair;
+            touch-action: none;
+            width: 100%;
+            height: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Memory Game */
+        .memory-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
         .mem-card {
             aspect-ratio: 1;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             cursor: pointer;
             transform-style: preserve-3d;
-            transition: transform 0.4s;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-        .mem-card.flipped { transform: rotateY(180deg); background: var(--bg-panel); border: 2px solid var(--primary); }
-        .mem-card.matched { visibility: hidden; }
 
-        /* Expense */
-        .balance-display { text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid var(--success); }
-        #exp-total { color: var(--success); font-size: 2.5rem; }
+        .mem-card::before {
+            content: '?';
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
+            backface-visibility: hidden;
+        }
+
+        .mem-card.flipped {
+            transform: rotateY(180deg);
+            background: var(--dark-light);
+            border: 3px solid var(--primary);
+        }
+
+        .mem-card.flipped::before {
+            content: '';
+        }
+
+        .mem-card-content {
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+        }
+
+        .mem-card.matched {
+            visibility: visible;
+            opacity: 0;
+            transform: scale(0.8) rotateY(180deg);
+        }
+
+        /* Expense Tracker */
+        .balance-display {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 24px;
+            border: 2px solid var(--success);
+            backdrop-filter: blur(10px);
+        }
+
+        .balance-label {
+            color: var(--gray);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        #exp-total {
+            color: var(--success);
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .expense-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .app-container { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; max-height: 200px; }
-            .nav-links { display: flex; overflow-x: auto; padding: 0.5rem; }
-            .nav-btn { width: auto; white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; }
-            .nav-btn.active { border-left: none; border-bottom-color: var(--primary); }
-            .time-display { font-size: 2.5rem; }
-            .memory-grid { grid-template-columns: repeat(4, 1fr); }
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                padding: 0.5rem;
+                white-space: nowrap;
+            }
+
+            .nav-btn {
+                width: auto;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                padding: 0.8rem 1.2rem;
+            }
+
+            .nav-btn.active {
+                border-left: none;
+                border-bottom-color: var(--primary);
+            }
+
+            .time-display {
+                font-size: 3rem;
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            .mem-card {
+                font-size: 2rem;
+            }
+
+            .expense-form {
+                grid-template-columns: 1fr;
+            }
+
+            .converter-row {
+                grid-template-columns: 1fr;
+            }
+
+            .swap-btn {
+                margin: 1rem auto;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: var(--dark-light);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            min-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <ul class="bg-animation">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <div class="logo"><h2>⚡ NanoApps</h2></div>
+            <div class="logo">
+                <h1>☁️ CloudApps</h1>
+            </div>
             <nav class="nav-links">
-                <button class="nav-btn active" data-target="stopwatch">⏱️ Stopwatch</button>
-                <button class="nav-btn" data-target="weather">🌤️ Weather</button>
-                <button class="nav-btn" data-target="tictactoe">🎮 Tic-Tac-Toe</button>
-                <button class="nav-btn" data-target="converter">🔄 Converter</button>
-                <button class="nav-btn" data-target="todo">✅ To-Do List</button>
-                <button class="nav-btn" data-target="calculator">🧮 Calculator</button>
-                <button class="nav-btn" data-target="password">🔐 Password Gen</button>
-                <button class="nav-btn" data-target="drawing">🎨 Drawing Board</button>
-                <button class="nav-btn" data-target="memory">🧠 Memory Game</button>
-                <button class="nav-btn" data-target="expense">💰 Expense Tracker</button>
+                <button class="nav-btn active" data-target="stopwatch">
+                    <span>⏱️</span> Stopwatch
+                </button>
+                <button class="nav-btn" data-target="weather">
+                    <span>🌤️</span> Weather
+                </button>
+                <button class="nav-btn" data-target="tictactoe">
+                    <span>🎮</span> Tic-Tac-Toe
+                </button>
+                <button class="nav-btn" data-target="converter">
+                    <span>🔄</span> Converter
+                </button>
+                <button class="nav-btn" data-target="todo">
+                    <span>✅</span> To-Do List
+                </button>
+                <button class="nav-btn" data-target="calculator">
+                    <span>🧮</span> Calculator
+                </button>
+                <button class="nav-btn" data-target="password">
+                    <span>🔐</span> Password Gen
+                </button>
+                <button class="nav-btn" data-target="drawing">
+                    <span>🎨</span> Drawing Board
+                </button>
+                <button class="nav-btn" data-target="memory">
+                    <span>🧠</span> Memory Game
+                </button>
+                <button class="nav-btn" data-target="expense">
+                    <span>💰</span> Expenses
+                </button>
             </nav>
-            <div class="sidebar-footer"><p>Built with Vanilla JS</p></div>
+            <div class="sidebar-footer">
+                <p>Built with ❤️ | Pure Vanilla JS</p>
+            </div>
         </aside>
 
         <!-- Main Content Area -->
@@ -256,14 +1277,25 @@
             
             <!-- 1. Stopwatch -->
             <section id="stopwatch" class="app-section active">
-                <h1>Pro Stopwatch</h1>
+                <div class="section-header">
+                    <h2>Pro Stopwatch</h2>
+                    <p>Precision timing with lap history</p>
+                </div>
                 <div class="glass-panel">
                     <div class="time-display" id="sw-display">00:00:00</div>
                     <div class="controls">
-                        <button id="sw-start" class="btn btn-primary">Start</button>
-                        <button id="sw-stop" class="btn btn-danger">Stop</button>
-                        <button id="sw-lap" class="btn btn-secondary">Lap</button>
-                        <button id="sw-reset" class="btn btn-outline">Reset</button>
+                        <button id="sw-start" class="btn btn-primary">
+                            <span>▶️</span> Start
+                        </button>
+                        <button id="sw-stop" class="btn btn-danger">
+                            <span>⏹️</span> Stop
+                        </button>
+                        <button id="sw-lap" class="btn btn-secondary">
+                            <span>🏁</span> Lap
+                        </button>
+                        <button id="sw-reset" class="btn btn-outline">
+                            <span>🔄</span> Reset
+                        </button>
                     </div>
                     <ul class="lap-list" id="sw-laps"></ul>
                 </div>
@@ -271,49 +1303,72 @@
 
             <!-- 2. Weather Dashboard -->
             <section id="weather" class="app-section">
-                <h1>Weather Dashboard</h1>
+                <div class="section-header">
+                    <h2>Weather Dashboard</h2>
+                    <p>Real-time weather for major cities</p>
+                </div>
                 <div class="weather-grid" id="weather-container"></div>
             </section>
 
             <!-- 3. Tic-Tac-Toe -->
             <section id="tictactoe" class="app-section">
-                <h1>Smart Tic-Tac-Toe</h1>
-                <div class="game-status" id="ttt-status">Your Turn (X)</div>
-                <div class="ttt-board" id="ttt-board"></div>
-                <div style="text-align:center; margin-top:1rem;"><button id="ttt-restart" class="btn btn-primary">Restart Game</button></div>
+                <div class="section-header">
+                    <h2>Smart Tic-Tac-Toe</h2>
+                    <p>Challenge the unbeatable AI</p>
+                </div>
+                <div class="glass-panel">
+                    <div class="game-status" id="ttt-status">Your Turn (X)</div>
+                    <div class="ttt-board" id="ttt-board"></div>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <button id="ttt-restart" class="btn btn-primary">
+                            <span>🔄</span> Restart Game
+                        </button>
+                    </div>
+                </div>
             </section>
 
             <!-- 4. Unit Converter -->
             <section id="converter" class="app-section">
-                <h1>Unit Converter</h1>
+                <div class="section-header">
+                    <h2>Unit Converter</h2>
+                    <p>Instant conversion for length and weight</p>
+                </div>
                 <div class="glass-panel converter-panel">
                     <div class="form-group">
-                        <label>Type</label>
+                        <label>Conversion Type</label>
                         <select id="conv-type">
                             <option value="length">Length</option>
                             <option value="weight">Weight</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>From</label>
-                        <input type="number" id="conv-input" placeholder="Enter value">
-                        <select id="conv-from"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>To</label>
-                        <input type="text" id="conv-output" readonly>
-                        <select id="conv-to"></select>
+                    <div class="converter-row">
+                        <div class="form-group">
+                            <label>From</label>
+                            <input type="number" id="conv-input" placeholder="Enter value">
+                            <select id="conv-from"></select>
+                        </div>
+                        <button class="swap-btn" id="conv-swap">⇄</button>
+                        <div class="form-group">
+                            <label>To</label>
+                            <input type="text" id="conv-output" readonly>
+                            <select id="conv-to"></select>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- 5. To-Do List -->
             <section id="todo" class="app-section">
-                <h1>Advanced To-Do</h1>
+                <div class="section-header">
+                    <h2>Advanced To-Do</h2>
+                    <p>Organize your tasks efficiently</p>
+                </div>
                 <div class="glass-panel">
                     <div class="input-group">
                         <input type="text" id="todo-input" placeholder="Add a new task...">
-                        <button id="todo-add" class="btn btn-primary">Add</button>
+                        <button id="todo-add" class="btn btn-primary">
+                            <span>➕</span> Add
+                        </button>
                     </div>
                     <ul class="todo-list" id="todo-list"></ul>
                 </div>
@@ -321,8 +1376,11 @@
 
             <!-- 6. Scientific Calculator -->
             <section id="calculator" class="app-section">
-                <h1>Scientific Calculator</h1>
-                <div class="calc-wrapper">
+                <div class="section-header">
+                    <h2>Scientific Calculator</h2>
+                    <p>Advanced calculations made simple</p>
+                </div>
+                <div class="glass-panel calc-wrapper">
                     <input type="text" id="calc-display" readonly>
                     <div class="calc-keys"></div>
                 </div>
@@ -330,450 +1388,847 @@
 
             <!-- 7. Password Generator -->
             <section id="password" class="app-section">
-                <h1>Password Generator</h1>
+                <div class="section-header">
+                    <h2>Password Generator</h2>
+                    <p>Create secure passwords instantly</p>
+                </div>
                 <div class="glass-panel">
                     <div class="pass-result">
                         <input type="text" id="pass-output" readonly>
-                        <button id="pass-copy" class="btn btn-sm">Copy</button>
+                        <button id="pass-copy" class="btn btn-primary btn-sm">
+                            <span>📋</span> Copy
+                        </button>
+                    </div>
+                    <div class="strength-meter">
+                        <div class="strength-bar" id="strength-bar"></div>
                     </div>
                     <div class="controls-grid">
-                        <div class="form-group">
-                            <label>Length: <span id="pass-len-val">12</span></label>
-                            <input type="range" id="pass-length" min="6" max="32" value="12">
-                        </div>
-                        <label><input type="checkbox" id="inc-upper" checked> Uppercase</label>
-                        <label><input type="checkbox" id="inc-lower" checked> Lowercase</label>
-                        <label><input type="checkbox" id="inc-num" checked> Numbers</label>
-                        <label><input type="checkbox" id="inc-sym" checked> Symbols</label>
+                        <label class="toggle-option">
+                            <input type="checkbox" id="pass-upper" checked>
+                            <span>Uppercase (A-Z)</span>
+                        </label>
+                        <label class="toggle-option">
+                            <input type="checkbox" id="pass-lower" checked>
+                            <span>Lowercase (a-z)</span>
+                        </label>
+                        <label class="toggle-option">
+                            <input type="checkbox" id="pass-numbers" checked>
+                            <span>Numbers (0-9)</span>
+                        </label>
+                        <label class="toggle-option">
+                            <input type="checkbox" id="pass-symbols" checked>
+                            <span>Symbols (!@#)</span>
+                        </label>
                     </div>
-                    <button id="pass-gen" class="btn btn-primary full-width">Generate Password</button>
+                    <div class="form-group">
+                        <label>Password Length: <span id="pass-len-val" style="color: var(--primary-light); font-weight: 600;">16</span></label>
+                        <input type="range" id="pass-length" min="6" max="32" value="16">
+                    </div>
+                    <button id="pass-generate" class="btn btn-success full-width">
+                        <span>🔐</span> Generate Password
+                    </button>
                 </div>
             </section>
 
             <!-- 8. Drawing Board -->
             <section id="drawing" class="app-section">
-                <h1>Drawing Board</h1>
-                <div class="draw-controls">
-                    <input type="color" id="draw-color" value="#00ffcc" style="width:60px; padding:0;">
-                    <input type="range" id="draw-size" min="1" max="50" value="5" style="width:150px; margin:0;">
-                    <button id="draw-clear" class="btn btn-danger">Clear</button>
-                    <button id="draw-save" class="btn btn-secondary">Save</button>
+                <div class="section-header">
+                    <h2>Drawing Board</h2>
+                    <p>Unleash your creativity</p>
                 </div>
-                <canvas id="draw-canvas"></canvas>
+                <div class="glass-panel">
+                    <div class="draw-controls">
+                        <label>
+                            <span style="margin-right: 0.5rem;">Color:</span>
+                            <input type="color" id="draw-color" class="color-picker" value="#6366f1">
+                        </label>
+                        <div class="brush-size">
+                            <span>Size:</span>
+                            <input type="range" id="draw-size" min="1" max="50" value="5">
+                            <span id="draw-size-val">5px</span>
+                        </div>
+                        <button id="draw-clear" class="btn btn-danger btn-sm">
+                            <span>🗑️</span> Clear
+                        </button>
+                        <button id="draw-save" class="btn btn-success btn-sm">
+                            <span>💾</span> Save
+                        </button>
+                    </div>
+                    <canvas id="draw-canvas"></canvas>
+                </div>
             </section>
 
-            <!-- 9. Memory Match -->
+            <!-- 9. Memory Match Game -->
             <section id="memory" class="app-section">
-                <h1>Memory Match</h1>
-                <div class="memory-stats">
-                    <span>Moves: <b id="mem-moves">0</b></span>
-                    <button id="mem-reset" class="btn btn-sm">Reset</button>
+                <div class="section-header">
+                    <h2>Memory Match</h2>
+                    <p>Test your memory skills</p>
                 </div>
-                <div class="memory-grid" id="mem-grid"></div>
+                <div class="glass-panel">
+                    <div class="memory-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="mem-moves">0</div>
+                            <div class="stat-label">Moves</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mem-time">00:00</div>
+                            <div class="stat-label">Time</div>
+                        </div>
+                        <button id="mem-restart" class="btn btn-primary btn-sm">
+                            <span>🔄</span> Restart
+                        </button>
+                    </div>
+                    <div class="memory-grid" id="memory-grid"></div>
+                </div>
             </section>
 
             <!-- 10. Expense Tracker -->
             <section id="expense" class="app-section">
-                <h1>Expense Tracker</h1>
+                <div class="section-header">
+                    <h2>Expense Tracker</h2>
+                    <p>Manage your budget wisely</p>
+                </div>
                 <div class="glass-panel">
                     <div class="balance-display">
-                        <h3>Total Budget</h3>
-                        <h1 id="exp-total">$0.00</h1>
+                        <div class="balance-label">Total Budget</div>
+                        <div id="exp-total">$0.00</div>
                     </div>
-                    <div class="input-group">
-                        <input type="text" id="exp-desc" placeholder="Description">
-                        <input type="number" id="exp-amount" placeholder="Amount">
-                        <button id="exp-add" class="btn btn-primary">Add</button>
+                    <div class="expense-form">
+                        <input type="text" id="exp-name" placeholder="Expense name">
+                        <input type="number" id="exp-amount" placeholder="Amount" step="0.01">
+                        <button id="exp-add" class="btn btn-primary">
+                            <span>➕</span> Add
+                        </button>
                     </div>
-                    <ul class="expense-list" id="exp-list"></ul>
+                    <ul class="expense-list" id="expense-list"></ul>
                 </div>
             </section>
 
         </main>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
     <script>
-        // --- Navigation Logic ---
-        document.querySelectorAll('.nav-btn').forEach(btn => {
+        // ==================== Utility Functions ====================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // ==================== Navigation ====================
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.app-section');
+
+        navBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.target).classList.add('active');
+                const target = btn.dataset.target;
                 
-                // Initialize specific apps when opened
-                if(btn.dataset.target === 'drawing') initCanvas();
-                if(btn.dataset.target === 'memory' && document.getElementById('mem-grid').children.length === 0) initMemory();
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === target) {
+                        section.classList.add('active');
+                    }
+                });
             });
         });
 
-        // --- 1. Stopwatch ---
-        let swInterval, swTime = 0, swRunning = false, swLapCount = 0;
-        const swDisplay = document.getElementById('sw-display');
-        const swLaps = document.getElementById('sw-laps');
-        
-        function updateSW() {
-            swTime += 10;
-            const date = new Date(swTime);
-            swDisplay.textContent = date.toISOString().substr(14, 8) + '.' + Math.floor(date.getMilliseconds()/10);
-        }
-        
-        document.getElementById('sw-start').onclick = () => {
-            if(!swRunning) { swRunning = true; swInterval = setInterval(updateSW, 10); }
-        };
-        document.getElementById('sw-stop').onclick = () => { swRunning = false; clearInterval(swInterval); };
-        document.getElementById('sw-reset').onclick = () => {
-            swRunning = false; clearInterval(swInterval); swTime = 0; swLapCount = 0;
-            swDisplay.textContent = "00:00:00"; swLaps.innerHTML = "";
-        };
-        document.getElementById('sw-lap').onclick = () => {
-            if(swRunning) {
-                swLapCount++;
-                const li = document.createElement('li');
-                li.className = 'lap-item';
-                li.innerHTML = `<span>Lap ${swLapCount}</span><span>${swDisplay.textContent}</span>`;
-                swLaps.prepend(li);
-            }
-        };
+        // ==================== 1. Stopwatch ====================
+        let swInterval = null;
+        let swStartTime = 0;
+        let swElapsedTime = 0;
+        let swLapCount = 0;
 
-        // --- 2. Weather (Static) ---
+        const swDisplay = document.getElementById('sw-display');
+        const swStartBtn = document.getElementById('sw-start');
+        const swStopBtn = document.getElementById('sw-stop');
+        const swLapBtn = document.getElementById('sw-lap');
+        const swResetBtn = document.getElementById('sw-reset');
+        const swLapsList = document.getElementById('sw-laps');
+
+        swStartBtn.addEventListener('click', () => {
+            if (!swInterval) {
+                swStartTime = Date.now() - swElapsedTime;
+                swInterval = setInterval(() => {
+                    swElapsedTime = Date.now() - swStartTime;
+                    swDisplay.textContent = formatTime(swElapsedTime);
+                }, 10);
+                swStartBtn.innerHTML = '<span>⏸️</span> Pause';
+                swStartBtn.classList.remove('btn-primary');
+                swStartBtn.classList.add('btn-success');
+            }
+        });
+
+        swStopBtn.addEventListener('click', () => {
+            if (swInterval) {
+                clearInterval(swInterval);
+                swInterval = null;
+                swStartBtn.innerHTML = '<span>▶️</span> Start';
+                swStartBtn.classList.remove('btn-success');
+                swStartBtn.classList.add('btn-primary');
+            }
+        });
+
+        swLapBtn.addEventListener('click', () => {
+            if (swInterval) {
+                swLapCount++;
+                const lapTime = formatTime(swElapsedTime);
+                const lapItem = document.createElement('li');
+                lapItem.className = 'lap-item';
+                lapItem.innerHTML = `
+                    <span class="lap-number">Lap ${swLapCount}</span>
+                    <span class="lap-time">${lapTime}</span>
+                `;
+                swLapsList.insertBefore(lapItem, swLapsList.firstChild);
+            }
+        });
+
+        swResetBtn.addEventListener('click', () => {
+            if (swInterval) {
+                clearInterval(swInterval);
+                swInterval = null;
+            }
+            swElapsedTime = 0;
+            swLapCount = 0;
+            swDisplay.textContent = '00:00:00';
+            swLapsList.innerHTML = '';
+            swStartBtn.innerHTML = '<span>▶️</span> Start';
+            swStartBtn.classList.remove('btn-success');
+            swStartBtn.classList.add('btn-primary');
+        });
+
+        // ==================== 2. Weather Dashboard ====================
         const weatherData = [
-            { city: "New York", temp: "22°C", condition: "Sunny", icon: "☀️" },
-            { city: "London", temp: "15°C", condition: "Rainy", icon: "🌧️" },
-            { city: "Tokyo", temp: "28°C", condition: "Cloudy", icon: "☁️" }
+            { city: 'New York', temp: 22, desc: 'Partly Cloudy', humidity: 65, wind: 12, icon: '⛅' },
+            { city: 'London', temp: 15, desc: 'Rainy', humidity: 82, wind: 18, icon: '🌧️' },
+            { city: 'Tokyo', temp: 28, desc: 'Sunny', humidity: 55, wind: 8, icon: '☀️' },
+            { city: 'Dubai', temp: 38, desc: 'Clear Sky', humidity: 40, wind: 15, icon: '🌞' },
+            { city: 'Paris', temp: 18, desc: 'Cloudy', humidity: 70, wind: 10, icon: '☁️' },
+            { city: 'Sydney', temp: 25, desc: 'Windy', humidity: 60, wind: 25, icon: '💨' }
         ];
+
         const weatherContainer = document.getElementById('weather-container');
-        weatherData.forEach(w => {
-            weatherContainer.innerHTML += `
-                <div class="weather-card">
-                    <div style="font-size:3rem">${w.icon}</div>
-                    <div class="weather-temp">${w.temp}</div>
-                    <div class="weather-city">${w.city}</div>
-                    <div style="color:var(--text-muted)">${w.condition}</div>
+        weatherData.forEach(city => {
+            const card = document.createElement('div');
+            card.className = 'weather-card';
+            card.innerHTML = `
+                <div class="weather-icon">${city.icon}</div>
+                <div class="weather-city">${city.city}</div>
+                <div class="weather-temp">${city.temp}°C</div>
+                <div class="weather-desc">${city.desc}</div>
+                <div class="weather-details">
+                    <div class="weather-detail">
+                        <div class="weather-detail-value">${city.humidity}%</div>
+                        <div class="weather-detail-label">Humidity</div>
+                    </div>
+                    <div class="weather-detail">
+                        <div class="weather-detail-value">${city.wind} km/h</div>
+                        <div class="weather-detail-label">Wind</div>
+                    </div>
                 </div>
             `;
+            weatherContainer.appendChild(card);
         });
 
-        // --- 3. Tic-Tac-Toe (Minimax AI) ---
+        // ==================== 3. Tic-Tac-Toe (Minimax AI) ====================
         let tttBoard = Array(9).fill(null);
-        let tttActive = true;
-        const tttEl = document.getElementById('ttt-board');
+        let tttGameActive = true;
+        const HUMAN = 'X';
+        const AI = 'O';
+
         const tttStatus = document.getElementById('ttt-status');
-        
-        function renderTTT() {
-            tttEl.innerHTML = '';
-            tttBoard.forEach((cell, i) => {
-                const div = document.createElement('div');
-                div.className = `ttt-cell ${cell ? cell.toLowerCase() : ''}`;
-                div.textContent = cell || '';
-                div.onclick = () => playTTT(i);
-                tttEl.appendChild(div);
+        const tttBoardEl = document.getElementById('ttt-board');
+        const tttRestartBtn = document.getElementById('ttt-restart');
+
+        function initTTT() {
+            tttBoardEl.innerHTML = '';
+            tttBoard = Array(9).fill(null);
+            tttGameActive = true;
+            tttStatus.textContent = 'Your Turn (X)';
+            tttStatus.classList.remove('winner');
+            
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'ttt-cell';
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleTTTClick);
+                tttBoardEl.appendChild(cell);
+            }
+        }
+
+        function handleTTTClick(e) {
+            const index = e.target.dataset.index;
+            if (tttBoard[index] || !tttGameActive) return;
+
+            makeMove(index, HUMAN);
+            
+            if (tttGameActive) {
+                setTimeout(() => {
+                    const bestMove = getBestMove();
+                    makeMove(bestMove, AI);
+                }, 500);
+            }
+        }
+
+        function makeMove(index, player) {
+            tttBoard[index] = player;
+            const cell = tttBoardEl.children[index];
+            cell.textContent = player;
+            cell.classList.add(player.toLowerCase());
+
+            if (checkWin(tttBoard, player)) {
+                tttGameActive = false;
+                const winner = player === HUMAN ? 'You Win! 🎉' : 'AI Wins! 🤖';
+                tttStatus.textContent = winner;
+                tttStatus.classList.add('winner');
+                highlightWinningCells(player);
+            } else if (tttBoard.every(cell => cell !== null)) {
+                tttGameActive = false;
+                tttStatus.textContent = "It's a Draw! 🤝";
+            } else {
+                tttStatus.textContent = player === HUMAN ? 'AI Thinking...' : 'Your Turn (X)';
+            }
+        }
+
+        function checkWin(board, player) {
+            const wins = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            return wins.some(combo => combo.every(i => board[i] === player));
+        }
+
+        function highlightWinningCells(player) {
+            const wins = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            wins.forEach(combo => {
+                if (combo.every(i => tttBoard[i] === player)) {
+                    combo.forEach(i => tttBoardEl.children[i].classList.add('winning'));
+                }
             });
         }
-        
-        function playTTT(i) {
-            if(!tttActive || tttBoard[i]) return;
-            tttBoard[i] = 'X';
-            renderTTT();
-            if(checkWin('X')) { endGame('You Win!'); return; }
-            if(tttBoard.every(c => c)) { endGame('Draw!'); return; }
-            
-            tttStatus.textContent = "AI Thinking...";
-            setTimeout(() => {
-                const bestMove = getBestMove();
-                tttBoard[bestMove] = 'O';
-                renderTTT();
-                if(checkWin('O')) { endGame('AI Wins!'); return; }
-                if(tttBoard.every(c => c)) { endGame('Draw!'); return; }
-                tttStatus.textContent = "Your Turn (X)";
-            }, 400);
-        }
-        
-        function checkWin(player) {
-            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-            return wins.some(combo => combo.every(i => tttBoard[i] === player));
-        }
-        
-        function endGame(msg) { tttActive = false; tttStatus.textContent = msg; }
-        
+
         function getBestMove() {
-            let bestScore = -Infinity, move;
-            for(let i=0; i<9; i++) {
-                if(!tttBoard[i]) {
-                    tttBoard[i] = 'O';
-                    let score = minimax(tttBoard, 0, false);
+            let bestScore = -Infinity;
+            let move = 0;
+            for (let i = 0; i < 9; i++) {
+                if (tttBoard[i] === null) {
+                    tttBoard[i] = AI;
+                    const score = minimax(tttBoard, 0, false);
                     tttBoard[i] = null;
-                    if(score > bestScore) { bestScore = score; move = i; }
+                    if (score > bestScore) {
+                        bestScore = score;
+                        move = i;
+                    }
                 }
             }
             return move;
         }
-        
-        const scores = { O: 10, X: -10, tie: 0 };
-        function minimax(board, depth, isMax) {
-            if(checkWin('O')) return scores.O - depth;
-            if(checkWin('X')) return scores.X + depth;
-            if(board.every(c => c)) return scores.tie;
-            
-            if(isMax) {
-                let best = -Infinity;
-                for(let i=0; i<9; i++) {
-                    if(!board[i]) { board[i] = 'O'; best = Math.max(best, minimax(board, depth+1, false)); board[i] = null; }
+
+        function minimax(board, depth, isMaximizing) {
+            if (checkWin(board, AI)) return 10 - depth;
+            if (checkWin(board, HUMAN)) return depth - 10;
+            if (board.every(cell => cell !== null)) return 0;
+
+            if (isMaximizing) {
+                let bestScore = -Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === null) {
+                        board[i] = AI;
+                        const score = minimax(board, depth + 1, false);
+                        board[i] = null;
+                        bestScore = Math.max(score, bestScore);
+                    }
                 }
-                return best;
+                return bestScore;
             } else {
-                let best = Infinity;
-                for(let i=0; i<9; i++) {
-                    if(!board[i]) { board[i] = 'X'; best = Math.min(best, minimax(board, depth+1, true)); board[i] = null; }
+                let bestScore = Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === null) {
+                        board[i] = HUMAN;
+                        const score = minimax(board, depth + 1, true);
+                        board[i] = null;
+                        bestScore = Math.min(score, bestScore);
+                    }
                 }
-                return best;
+                return bestScore;
             }
         }
-        
-        document.getElementById('ttt-restart').onclick = () => {
-            tttBoard.fill(null); tttActive = true; tttStatus.textContent = "Your Turn (X)"; renderTTT();
-        };
-        renderTTT();
 
-        // --- 4. Unit Converter ---
+        tttRestartBtn.addEventListener('click', initTTT);
+        initTTT();
+
+        // ==================== 4. Unit Converter ====================
         const units = {
-            length: { m: 1, km: 0.001, cm: 100, mm: 1000, ft: 3.28084, in: 39.3701 },
-            weight: { kg: 1, g: 1000, lb: 2.20462, oz: 35.274 }
+            length: ['Meter', 'Kilometer', 'Centimeter', 'Millimeter', 'Mile', 'Yard', 'Foot', 'Inch'],
+            weight: ['Kilogram', 'Gram', 'Milligram', 'Ton', 'Pound', 'Ounce']
         };
+
+        const rates = {
+            length: { Meter: 1, Kilometer: 0.001, Centimeter: 100, Millimeter: 1000, Mile: 0.000621371, Yard: 1.09361, Foot: 3.28084, Inch: 39.3701 },
+            weight: { Kilogram: 1, Gram: 1000, Milligram: 1000000, Ton: 0.001, Pound: 2.20462, Ounce: 35.274 }
+        };
+
         const convType = document.getElementById('conv-type');
         const convFrom = document.getElementById('conv-from');
         const convTo = document.getElementById('conv-to');
         const convInput = document.getElementById('conv-input');
         const convOutput = document.getElementById('conv-output');
-        
+        const convSwap = document.getElementById('conv-swap');
+
         function updateUnits() {
             const type = convType.value;
-            const opts = Object.keys(units[type]).map(u => `<option value="${u}">${u.toUpperCase()}</option>`).join('');
-            convFrom.innerHTML = opts; convTo.innerHTML = opts;
+            convFrom.innerHTML = units[type].map(u => `<option value="${u}">${u}</option>`).join('');
+            convTo.innerHTML = units[type].map(u => `<option value="${u}">${u}</option>`).join('');
             convTo.selectedIndex = 1;
             convert();
         }
-        
+
         function convert() {
             const type = convType.value;
-            const val = parseFloat(convInput.value) || 0;
             const from = convFrom.value;
             const to = convTo.value;
-            const base = val / units[type][from];
-            const res = base * units[type][to];
-            convOutput.value = res.toFixed(4) + ' ' + to.toUpperCase();
+            const value = parseFloat(convInput.value);
+
+            if (isNaN(value)) {
+                convOutput.value = '';
+                return;
+            }
+
+            const result = (value / rates[type][from]) * rates[type][to];
+            convOutput.value = result.toFixed(4);
         }
-        
-        convType.onchange = updateUnits;
-        convFrom.onchange = convInput.oninput = convTo.onchange = convert;
+
+        convType.addEventListener('change', updateUnits);
+        convFrom.addEventListener('change', convert);
+        convTo.addEventListener('change', convert);
+        convInput.addEventListener('input', convert);
+        convSwap.addEventListener('click', () => {
+            [convFrom.value, convTo.value] = [convTo.value, convFrom.value];
+            convert();
+        });
+
         updateUnits();
 
-        // --- 5. To-Do List ---
+        // ==================== 5. To-Do List ====================
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        const todoList = document.getElementById('todo-list');
+
         const todoInput = document.getElementById('todo-input');
-        
-        function renderTodos() {
-            todoList.innerHTML = '';
-            todos.forEach((t, i) => {
-                const li = document.createElement('li');
-                li.className = `todo-item ${t.done ? 'completed' : ''}`;
-                li.innerHTML = `
-                    <span onclick="toggleTodo(${i})" style="cursor:pointer;flex:1">${t.text}</span>
-                    <button class="delete-btn" onclick="delTodo(${i})">&times;</button>
-                `;
-                todoList.appendChild(li);
-            });
+        const todoAddBtn = document.getElementById('todo-add');
+        const todoList = document.getElementById('todo-list');
+
+        function saveTodos() {
             localStorage.setItem('todos', JSON.stringify(todos));
         }
-        
-        window.toggleTodo = i => { todos[i].done = !todos[i].done; renderTodos(); };
-        window.delTodo = i => { todos.splice(i, 1); renderTodos(); };
-        
-        document.getElementById('todo-add').onclick = () => {
-            if(todoInput.value.trim()) {
-                todos.push({ text: todoInput.value, done: false });
-                todoInput.value = ''; renderTodos();
-            }
+
+        function renderTodos() {
+            todoList.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const item = document.createElement('li');
+                item.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <span>${todo.text}</span>
+                    <div class="todo-actions">
+                        <button class="action-btn complete-btn" onclick="toggleTodo(${index})">✓</button>
+                        <button class="action-btn delete-btn" onclick="deleteTodo(${index})">✗</button>
+                    </div>
+                `;
+                todoList.appendChild(item);
+            });
+        }
+
+        window.toggleTodo = (index) => {
+            todos[index].completed = !todos[index].completed;
+            saveTodos();
+            renderTodos();
         };
+
+        window.deleteTodo = (index) => {
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+        };
+
+        todoAddBtn.addEventListener('click', () => {
+            const text = todoInput.value.trim();
+            if (text) {
+                todos.push({ text, completed: false });
+                todoInput.value = '';
+                saveTodos();
+                renderTodos();
+                showToast('Task added successfully!', 'success');
+            }
+        });
+
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') todoAddBtn.click();
+        });
+
         renderTodos();
 
-        // --- 6. Calculator ---
-        const calcKeys = [
-            'C', '√', 'x²', '/', '7', '8', '9', '*', '4', '5', '6', '-', '1', '2', '3', '+', '0', '.', '='
-        ];
+        // ==================== 6. Scientific Calculator ====================
         const calcDisplay = document.getElementById('calc-display');
-        const calcKeysEl = document.querySelector('.calc-keys');
-        
-        calcKeys.forEach(k => {
+        const calcKeys = document.querySelector('.calc-keys');
+
+        const keys = [
+            'C', '√', 'x²', '÷',
+            '7', '8', '9', '×',
+            '4', '5', '6', '-',
+            '1', '2', '3', '+',
+            '0', '.', '=', 
+        ];
+
+        keys.forEach(key => {
             const btn = document.createElement('button');
-            btn.className = `calc-key ${['/','*','-','+'].includes(k) ? 'op' : ''} ${k==='=' ? 'eq' : ''} ${k==='C' ? 'clear' : ''}`;
-            btn.textContent = k;
-            btn.onclick = () => handleCalc(k);
-            calcKeysEl.appendChild(btn);
+            btn.className = 'calc-key';
+            btn.textContent = key;
+            
+            if (['÷', '×', '-', '+'].includes(key)) btn.classList.add('op');
+            if (key === '=') btn.classList.add('eq');
+            if (key === 'C') btn.classList.add('clear');
+
+            btn.addEventListener('click', () => handleCalc(key));
+            calcKeys.appendChild(btn);
         });
-        
-        function handleCalc(k) {
-            if(k === 'C') calcDisplay.value = '';
-            else if(k === '=') {
-                try { calcDisplay.value = eval(calcDisplay.value); } catch { calcDisplay.value = 'Error'; }
-            } else if(k === '√') {
-                try { calcDisplay.value = Math.sqrt(eval(calcDisplay.value)); } catch { calcDisplay.value = 'Error'; }
-            } else if(k === 'x²') {
-                try { const v = eval(calcDisplay.value); calcDisplay.value = v*v; } catch { calcDisplay.value = 'Error'; }
-            } else { calcDisplay.value += k; }
+
+        function handleCalc(key) {
+            if (key === 'C') {
+                calcDisplay.value = '';
+            } else if (key === '=') {
+                try {
+                    let expr = calcDisplay.value
+                        .replace(/×/g, '*')
+                        .replace(/÷/g, '/')
+                        .replace(/√/g, 'Math.sqrt')
+                        .replace(/x²/g, '**2');
+                    calcDisplay.value = eval(expr);
+                } catch {
+                    calcDisplay.value = 'Error';
+                    setTimeout(() => calcDisplay.value = '', 1500);
+                }
+            } else if (key === '√') {
+                calcDisplay.value += '√(';
+            } else if (key === 'x²') {
+                calcDisplay.value += '**2';
+            } else {
+                calcDisplay.value += key;
+            }
         }
 
-        // --- 7. Password Generator ---
-        document.getElementById('pass-gen').onclick = () => {
-            const len = document.getElementById('pass-length').value;
-            const upper = document.getElementById('inc-upper').checked;
-            const lower = document.getElementById('inc-lower').checked;
-            const num = document.getElementById('inc-num').checked;
-            const sym = document.getElementById('inc-sym').checked;
-            
-            let chars = '';
-            if(upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if(lower) chars += 'abcdefghijklmnopqrstuvwxyz';
-            if(num) chars += '0123456789';
-            if(sym) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-            
-            if(!chars) { alert('Select at least one option'); return; }
-            
-            let pass = '';
-            for(let i=0; i<len; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('pass-output').value = pass;
-        };
-        
-        document.getElementById('pass-length').oninput = e => document.getElementById('pass-len-val').textContent = e.target.value;
-        document.getElementById('pass-copy').onclick = () => {
-            navigator.clipboard.writeText(document.getElementById('pass-output').value);
-            alert('Copied!');
-        };
+        // ==================== 7. Password Generator ====================
+        const passOutput = document.getElementById('pass-output');
+        const passLength = document.getElementById('pass-length');
+        const passLenVal = document.getElementById('pass-len-val');
+        const passUpper = document.getElementById('pass-upper');
+        const passLower = document.getElementById('pass-lower');
+        const passNumbers = document.getElementById('pass-numbers');
+        const passSymbols = document.getElementById('pass-symbols');
+        const passGenerate = document.getElementById('pass-generate');
+        const passCopy = document.getElementById('pass-copy');
+        const strengthBar = document.getElementById('strength-bar');
 
-        // --- 8. Drawing Board ---
+        passLength.addEventListener('input', () => {
+            passLenVal.textContent = passLength.value;
+        });
+
+        function generatePassword() {
+            const length = parseInt(passLength.value);
+            const useUpper = passUpper.checked;
+            const useLower = passLower.checked;
+            const useNumbers = passNumbers.checked;
+            const useSymbols = passSymbols.checked;
+
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            let chars = '';
+            if (useUpper) chars += upper;
+            if (useLower) chars += lower;
+            if (useNumbers) chars += numbers;
+            if (useSymbols) chars += symbols;
+
+            if (chars === '') {
+                showToast('Please select at least one option!', 'error');
+                return;
+            }
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            passOutput.value = password;
+            updateStrength(password);
+        }
+
+        function updateStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            strengthBar.className = 'strength-bar';
+            if (strength <= 2) strengthBar.classList.add('strength-weak');
+            else if (strength <= 4) strengthBar.classList.add('strength-medium');
+            else strengthBar.classList.add('strength-strong');
+        }
+
+        passGenerate.addEventListener('click', generatePassword);
+        passCopy.addEventListener('click', () => {
+            if (passOutput.value) {
+                navigator.clipboard.writeText(passOutput.value);
+                showToast('Password copied!', 'success');
+            }
+        });
+
+        generatePassword();
+
+        // ==================== 8. Drawing Board ====================
         const canvas = document.getElementById('draw-canvas');
         const ctx = canvas.getContext('2d');
-        let painting = false;
-        
-        function initCanvas() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = document.getElementById('draw-color').value;
-            ctx.lineWidth = document.getElementById('draw-size').value;
+        const drawColor = document.getElementById('draw-color');
+        const drawSize = document.getElementById('draw-size');
+        const drawSizeVal = document.getElementById('draw-size-val');
+        const drawClear = document.getElementById('draw-clear');
+        const drawSave = document.getElementById('draw-save');
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width - 80;
+            canvas.height = 500;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
-        
-        function startDraw(e) { painting = true; draw(e); }
-        function endDraw() { painting = false; ctx.beginPath(); }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        drawSize.addEventListener('input', () => {
+            drawSizeVal.textContent = `${drawSize.value}px`;
+        });
+
+        function startDrawing(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
         function draw(e) {
-            if(!painting) return;
-            const rect = canvas.getBoundingClientRect();
-            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-            ctx.stroke();
+            if (!isDrawing) return;
+            ctx.strokeStyle = drawColor.value;
+            ctx.lineWidth = drawSize.value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
             ctx.beginPath();
-            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
         }
-        
-        canvas.addEventListener('mousedown', startDraw);
-        canvas.addEventListener('mouseup', endDraw);
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
-        
-        document.getElementById('draw-color').onchange = e => ctx.strokeStyle = e.target.value;
-        document.getElementById('draw-size').oninput = e => ctx.lineWidth = e.target.value;
-        document.getElementById('draw-clear').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
-        document.getElementById('draw-save').onclick = () => {
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        drawClear.addEventListener('click', () => {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            showToast('Canvas cleared!', 'info');
+        });
+
+        drawSave.addEventListener('click', () => {
             const link = document.createElement('a');
             link.download = 'drawing.png';
             link.href = canvas.toDataURL();
             link.click();
-        };
+            showToast('Drawing saved!', 'success');
+        });
 
-        // --- 9. Memory Game ---
-        const emojis = ['🍎','🍌','🍒','🍇','🍉','🍓','🍍','🥝'];
-        let memCards = [], flipped = [], matched = [], moves = 0;
-        
+        // ==================== 9. Memory Game ====================
+        const emojis = ['🎮', '🎲', '🎯', '🎪', '🎨', '🎭', '🎬', '🎸'];
+        let memCards = [...emojis, ...emojis];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let memTimer = null;
+        let startTime = null;
+
+        const memGrid = document.getElementById('memory-grid');
+        const memMoves = document.getElementById('mem-moves');
+        const memTime = document.getElementById('mem-time');
+        const memRestart = document.getElementById('mem-restart');
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         function initMemory() {
-            const grid = document.getElementById('mem-grid');
-            grid.innerHTML = '';
-            memCards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
-            flipped = []; matched = []; moves = 0;
-            document.getElementById('mem-moves').textContent = 0;
-            
-            memCards.forEach((emoji, i) => {
+            shuffle(memCards);
+            memGrid.innerHTML = '';
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            memMoves.textContent = '0';
+            memTime.textContent = '00:00';
+            if (memTimer) clearInterval(memTimer);
+            startTime = null;
+
+            memCards.forEach((emoji, index) => {
                 const card = document.createElement('div');
                 card.className = 'mem-card';
-                card.dataset.idx = i;
-                card.dataset.val = emoji;
-                card.innerHTML = `<span style="transform:rotateY(180deg);display:none">${emoji}</span>`;
-                card.onclick = () => flipCard(card);
-                grid.appendChild(card);
+                card.dataset.index = index;
+                card.dataset.emoji = emoji;
+                card.innerHTML = `<div class="mem-card-content">${emoji}</div>`;
+                card.addEventListener('click', flipCard);
+                memGrid.appendChild(card);
             });
         }
-        
-        function flipCard(card) {
-            if(flipped.length === 2 || card.classList.contains('flipped') || matched.includes(card)) return;
-            
+
+        function flipCard(e) {
+            const card = e.currentTarget;
+            if (card.classList.contains('flipped') || card.classList.contains('matched') || flippedCards.length >= 2) return;
+
+            if (!startTime) {
+                startTime = Date.now();
+                memTimer = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                    const mins = Math.floor(elapsed / 60);
+                    const secs = elapsed % 60;
+                    memTime.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                }, 1000);
+            }
+
             card.classList.add('flipped');
-            card.querySelector('span').style.display = 'block';
-            flipped.push(card);
-            
-            if(flipped.length === 2) {
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
                 moves++;
-                document.getElementById('mem-moves').textContent = moves;
-                if(flipped[0].dataset.val === flipped[1].dataset.val) {
-                    matched.push(...flipped);
-                    flipped = [];
-                    if(matched.length === memCards.length) setTimeout(() => alert(`Won in ${moves} moves!`), 500);
-                } else {
-                    setTimeout(() => {
-                        flipped.forEach(c => { c.classList.remove('flipped'); c.querySelector('span').style.display = 'none'; });
-                        flipped = [];
-                    }, 1000);
-                }
+                memMoves.textContent = moves;
+                checkMatch();
             }
         }
-        
-        document.getElementById('mem-reset').onclick = initMemory;
 
-        // --- 10. Expense Tracker ---
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.emoji === card2.dataset.emoji) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                flippedCards = [];
+                if (matchedPairs === emojis.length) {
+                    clearInterval(memTimer);
+                    setTimeout(() => {
+                        showToast(`You won in ${moves} moves! 🎉`, 'success');
+                    }, 500);
+                }
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        memRestart.addEventListener('click', initMemory);
+        initMemory();
+
+        // ==================== 10. Expense Tracker ====================
         let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        
-        function renderExpenses() {
-            const list = document.getElementById('exp-list');
-            const totalEl = document.getElementById('exp-total');
-            list.innerHTML = '';
-            let total = 0;
-            
-            expenses.forEach((ex, i) => {
-                total += parseFloat(ex.amount);
-                const li = document.createElement('li');
-                li.className = 'expense-item';
-                li.innerHTML = `
-                    <span>${ex.desc}</span>
-                    <div style="display:flex;align-items:center;gap:1rem">
-                        <span style="color:var(--success)">$${ex.amount}</span>
-                        <button class="delete-btn" onclick="delExp(${i})">&times;</button>
-                    </div>
-                `;
-                list.appendChild(li);
-            });
-            
-            totalEl.textContent = '$' + total.toFixed(2);
+
+        const expName = document.getElementById('exp-name');
+        const expAmount = document.getElementById('exp-amount');
+        const expAdd = document.getElementById('exp-add');
+        const expList = document.getElementById('expense-list');
+        const expTotal = document.getElementById('exp-total');
+
+        function saveExpenses() {
             localStorage.setItem('expenses', JSON.stringify(expenses));
         }
-        
-        window.delExp = i => { expenses.splice(i, 1); renderExpenses(); };
-        
-        document.getElementById('exp-add').onclick = () => {
-            const desc = document.getElementById('exp-desc');
-            const amount = document.getElementById('exp-amount');
-            if(desc.value && amount.value) {
-                expenses.push({ desc: desc.value, amount: amount.value });
-                desc.value = ''; amount.value = '';
-                renderExpenses();
-            }
+
+        function renderExpenses() {
+            expList.innerHTML = '';
+            let total = 0;
+
+            expenses.forEach((exp, index) => {
+                total += exp.amount;
+                const item = document.createElement('li');
+                item.className = 'expense-item';
+                item.innerHTML = `
+                    <div>
+                        <strong>${exp.name}</strong>
+                        <div style="color: var(--gray); font-size: 0.9rem;">${new Date(exp.date).toLocaleDateString()}</div>
+                    </div>
+                    <div class="expense-actions">
+                        <span style="color: var(--success); font-weight: 600; margin-right: 1rem;">$${exp.amount.toFixed(2)}</span>
+                        <button class="action-btn delete-btn" onclick="deleteExpense(${index})">✗</button>
+                    </div>
+                `;
+                expList.appendChild(item);
+            });
+
+            expTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        window.deleteExpense = (index) => {
+            expenses.splice(index, 1);
+            saveExpenses();
+            renderExpenses();
+            showToast('Expense deleted!', 'info');
         };
+
+        expAdd.addEventListener('click', () => {
+            const name = expName.value.trim();
+            const amount = parseFloat(expAmount.value);
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                showToast('Please enter valid details!', 'error');
+                return;
+            }
+
+            expenses.push({ name, amount, date: new Date().toISOString() });
+            expName.value = '';
+            expAmount.value = '';
+            saveExpenses();
+            renderExpenses();
+            showToast('Expense added!', 'success');
+        });
+
         renderExpenses();
     </script>
 </body>
