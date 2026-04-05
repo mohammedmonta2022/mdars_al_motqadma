@@ -227,19 +227,290 @@
                 min-height: auto;
                 border-right: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+                margin-bottom: 1.5rem;
             }
 
             .nav-links {
                 display: flex;
                 justify-content: space-around;
+                flex-wrap: wrap;
+                gap: 0.5rem;
             }
 
             .nav-links li {
                 margin-bottom: 0;
+                flex: 0 0 auto;
+            }
+
+            .nav-links a {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .main-content {
+                padding: 1.5rem;
             }
 
             .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .weather-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+
+            .card-value {
                 font-size: 2rem;
+            }
+
+            .additional-info {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .info-item {
+                padding: 1rem;
+            }
+
+            .info-value {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Mobile - Small screens */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-links a {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .glass-card {
+                padding: 1.25rem;
+                border-radius: 15px;
+            }
+
+            .card-icon {
+                font-size: 2.5rem;
+            }
+
+            .card-title {
+                font-size: 0.8rem;
+            }
+
+            .card-value {
+                font-size: 1.8rem;
+            }
+
+            .card-unit {
+                font-size: 1rem;
+            }
+
+            .card-description {
+                font-size: 0.8rem;
+            }
+
+            .additional-info {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .info-item {
+                padding: 0.875rem;
+                border-radius: 12px;
+            }
+
+            .info-label {
+                font-size: 0.75rem;
+            }
+
+            .info-value {
+                font-size: 1rem;
+            }
+
+            body::before {
+                width: 250px;
+                height: 250px;
+            }
+
+            body::after {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* Tablet - Medium screens */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .weather-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .additional-info {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Large screens */
+        @media (min-width: 1024px) {
+            .main-content {
+                padding: 3rem;
+            }
+
+            .header h1 {
+                font-size: 3rem;
+            }
+
+            .weather-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+
+            .glass-card {
+                padding: 2.5rem;
+            }
+
+            .card-value {
+                font-size: 3rem;
+            }
+
+            .additional-info {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        /* Extra large screens */
+        @media (min-width: 1440px) {
+            .main-content {
+                padding: 4rem;
+            }
+
+            .sidebar {
+                width: 300px;
+                padding: 3rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .nav-links a {
+                padding: 1.25rem;
+                font-size: 1.1rem;
+            }
+
+            .header h1 {
+                font-size: 3.5rem;
+            }
+
+            .header p {
+                font-size: 1.3rem;
+            }
+
+            .weather-grid {
+                gap: 2.5rem;
+            }
+
+            .glass-card {
+                padding: 3rem;
+                border-radius: 25px;
+            }
+
+            .card-icon {
+                font-size: 4rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .card-value {
+                font-size: 3.5rem;
+            }
+
+            .card-description {
+                font-size: 1rem;
+            }
+
+            .additional-info {
+                gap: 2rem;
+            }
+
+            .info-item {
+                padding: 2rem;
+                border-radius: 20px;
+            }
+
+            .info-label {
+                font-size: 1rem;
+            }
+
+            .info-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .sidebar {
+                padding: 1rem 2rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .main-content {
+                padding: 1.5rem 2rem;
+            }
+
+            .weather-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .glass-card {
+                padding: 1rem;
+            }
+
+            .card-value {
+                font-size: 1.5rem;
+            }
+
+            .additional-info {
+                grid-template-columns: repeat(5, 1fr);
             }
         }
     </style>
