@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe - Unbeatable AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .status {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            min-height: 1.5em;
+            opacity: 0.9;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .cell:hover:not(.taken) {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .cell.taken {
+            cursor: not-allowed;
+        }
+
+        .cell.x {
+            color: #00d9ff;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .cell.o {
+            color: #ff6b6b;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .cell.winner {
+            animation: winPulse 0.6s ease-in-out infinite alternate;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes winPulse {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            }
+            to {
+                transform: scale(1.1);
+                box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+            }
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .difficulty {
+            margin-bottom: 1.5rem;
+        }
+
+        .difficulty label {
+            margin-right: 1rem;
+            opacity: 0.9;
+        }
+
+        .difficulty select {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .difficulty select option {
+            background: #667eea;
+            color: #fff;
+        }
+
+        @media (max-width: 450px) {
+            .cell {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TIC TAC TOE</h1>
+        <div class="difficulty">
+            <label for="difficulty">AI Level:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard" selected>Unbeatable</option>
+            </select>
+        </div>
+        <div class="status" id="status">Your turn (X)</div>
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <button class="btn" id="restart">New Game</button>
+    </div>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        const status = document.getElementById('status');
+        const restartBtn = document.getElementById('restart');
+        const difficultySelect = document.getElementById('difficulty');
+
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+        let currentPlayer = 'X';
+        const HUMAN = 'X';
+        const AI = 'O';
+
+        const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function init() {
+            cells.forEach(cell => {
+                cell.addEventListener('click', handleCellClick);
+            });
+            restartBtn.addEventListener('click', restartGame);
+            difficultySelect.addEventListener('change', restartGame);
+        }
+
+        function handleCellClick(e) {
+            const index = e.target.getAttribute('data-index');
+
+            if (board[index] !== '' || !gameActive || currentPlayer !== HUMAN) {
+                return;
+            }
+
+            makeMove(index, HUMAN);
+
+            if (gameActive) {
+                currentPlayer = AI;
+                status.textContent = "AI is thinking...";
+                
+                setTimeout(() => {
+                    const difficulty = difficultySelect.value;
+                    let move;
+                    
+                    if (difficulty === 'easy') {
+                        move = getRandomMove();
+                    } else if (difficulty === 'medium') {
+                        move = Math.random() > 0.5 ? getBestMove() : getRandomMove();
+                    } else {
+                        move = getBestMove();
+                    }
+                    
+                    if (move !== null) {
+                        makeMove(move, AI);
+                        if (gameActive) {
+                            currentPlayer = HUMAN;
+                            status.textContent = "Your turn (X)";
+                        }
+                    }
+                }, 500);
+            }
+        }
+
+        function makeMove(index, player) {
+            board[index] = player;
+            cells[index].textContent = player;
+            cells[index].classList.add('taken', player.toLowerCase());
+
+            if (checkWin(player)) {
+                gameActive = false;
+                highlightWinner(player);
+                if (player === HUMAN) {
+                    status.textContent = "🎉 You won!";
+                } else {
+                    status.textContent = "🤖 AI wins!";
+                }
+            } else if (checkDraw()) {
+                gameActive = false;
+                status.textContent = "🤝 It's a draw!";
+            }
+        }
+
+        function checkWin(player) {
+            return winningCombinations.some(combination => {
+                return combination.every(index => board[index] === player);
+            });
+        }
+
+        function checkDraw() {
+            return board.every(cell => cell !== '');
+        }
+
+        function highlightWinner(player) {
+            winningCombinations.forEach(combination => {
+                if (combination.every(index => board[index] === player)) {
+                    combination.forEach(index => {
+                        cells[index].classList.add('winner');
+                    });
+                }
+            });
+        }
+
+        function getRandomMove() {
+            const availableMoves = board.map((cell, index) => cell === '' ? index : null).filter(val => val !== null);
+            if (availableMoves.length === 0) return null;
+            return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+        }
+
+        function getBestMove() {
+            let bestScore = -Infinity;
+            let bestMove = null;
+
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = AI;
+                    let score = minimax(board, 0, false);
+                    board[i] = '';
+                    
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = i;
+                    }
+                }
+            }
+
+            return bestMove;
+        }
+
+        function minimax(board, depth, isMaximizing) {
+            if (checkWin(AI)) return 10 - depth;
+            if (checkWin(HUMAN)) return depth - 10;
+            if (checkDraw()) return 0;
+
+            if (isMaximizing) {
+                let bestScore = -Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === '') {
+                        board[i] = AI;
+                        let score = minimax(board, depth + 1, false);
+                        board[i] = '';
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+                return bestScore;
+            } else {
+                let bestScore = Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === '') {
+                        board[i] = HUMAN;
+                        let score = minimax(board, depth + 1, true);
+                        board[i] = '';
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+                return bestScore;
+            }
+        }
+
+        function restartGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = HUMAN;
+            status.textContent = "Your turn (X)";
+            
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('taken', 'x', 'o', 'winner');
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
