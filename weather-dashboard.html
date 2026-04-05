@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Glassmorphism</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Background decorative circles */
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        body::before {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            top: -100px;
+            right: -100px;
+        }
+
+        body::after {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.15);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 3rem;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        /* Weather Grid */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-unit {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 1rem;
+        }
+
+        /* Temperature Card Specific */
+        .temp-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+        }
+
+        /* Humidity Card Specific */
+        .humidity-card {
+            background: linear-gradient(135deg, rgba(100, 200, 255, 0.2), rgba(100, 200, 255, 0.05));
+        }
+
+        /* Wind Card Specific */
+        .wind-card {
+            background: linear-gradient(135deg, rgba(150, 255, 200, 0.2), rgba(150, 255, 200, 0.05));
+        }
+
+        /* Additional Info Section */
+        .additional-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .nav-links {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .nav-links li {
+                margin-bottom: 0;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">🌤️ WeatherApp</div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">📊 Dashboard</a></li>
+            <li><a href="#">📍 Locations</a></li>
+            <li><a href="#">📈 Analytics</a></li>
+            <li><a href="#">⚙️ Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1>Weather Dashboard</h1>
+            <p>Real-time weather conditions for San Francisco, CA</p>
+        </div>
+
+        <!-- Main Weather Cards Grid -->
+        <div class="weather-grid">
+            <!-- Temperature Card -->
+            <div class="glass-card temp-card">
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Temperature</div>
+                <div class="card-value">72<span class="card-unit">°F</span></div>
+                <div class="card-description">Feels like 75°F • Partly Cloudy</div>
+            </div>
+
+            <!-- Humidity Card -->
+            <div class="glass-card humidity-card">
+                <div class="card-icon">💧</div>
+                <div class="card-title">Humidity</div>
+                <div class="card-value">65<span class="card-unit">%</span></div>
+                <div class="card-description">Comfortable level • Dew point: 58°F</div>
+            </div>
+
+            <!-- Wind Speed Card -->
+            <div class="glass-card wind-card">
+                <div class="card-icon">💨</div>
+                <div class="card-title">Wind Speed</div>
+                <div class="card-value">12<span class="card-unit"> mph</span></div>
+                <div class="card-description">Direction: NW • Gusts up to 18 mph</div>
+            </div>
+        </div>
+
+        <!-- Additional Weather Information -->
+        <div class="additional-info">
+            <div class="info-item">
+                <div class="info-label">UV Index</div>
+                <div class="info-value">Moderate (5)</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Visibility</div>
+                <div class="info-value">10 miles</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Pressure</div>
+                <div class="info-value">30.12 inHg</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Sunrise</div>
+                <div class="info-value">6:42 AM</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Sunset</div>
+                <div class="info-value">7:58 PM</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
